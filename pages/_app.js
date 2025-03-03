@@ -16,7 +16,13 @@ function MyApp({ Component, pageProps }) {
     const [isMounted, setIsMounted] = useState(false);
     const { isDarkMode } = useDarkMode();
 
-    const theme = isDarkMode ? darkTheme : lightTheme;
+    const theme = isDarkMode ? {
+        ...darkTheme,
+        name: 'dark'
+    } : {
+        ...lightTheme,
+        name: 'light'
+    };
 
     useEffect(() => {
         setIsMounted(true);

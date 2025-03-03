@@ -15,7 +15,7 @@ import { useDarkMode } from "usehooks-ts";
 
 
 const Links = () => {
-  const darkMode = useDarkMode(false);
+  const { isDarkMode, toggle } = useDarkMode();
 
   // all user info from bioData
   const name = bioData[0].name;
@@ -69,8 +69,8 @@ const Links = () => {
 
   return (
       <LinkWrapper>
-        <ThemeToggle onClick={darkMode.toggle}>
-          <span className={darkMode.value ? "icon-moon" : "icon-sun"} />
+        <ThemeToggle onClick={toggle}>
+          <span className={isDarkMode ? "icon-moon" : "icon-sun"} />
         </ThemeToggle>
         <LinkContainer>
           <TopPart>
@@ -127,7 +127,10 @@ const Links = () => {
                       return (
                           <a href={i.url} key={i.title} target="_blank" rel="noreferrer">
                             <LinkBox className="socialIcon">
-                              <img src={i.icon} style={{ filter: 'var(--img)' }} />
+                              <img 
+                                src={i.icon} 
+                                alt={i.title}
+                              />
                             </LinkBox>
                           </a>
                       )
@@ -488,7 +491,7 @@ const LinkBox = styled.div`
     padding: 18px 20px;
     border-radius: 12px;
     margin: 8px 18px;
-    border: 1px solid ${({ theme }) => theme.bg.secondary};
+    border: 1px solid ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : theme.bg.secondary};
     flex-direction: row;
     display: flex;
     align-items: center;
@@ -499,6 +502,8 @@ const LinkBox = styled.div`
     letter-spacing: -.5px;
     position: relative;
     text-align: center;
+    color: ${({ theme }) => theme.name === 'dark' ? 'var(--color-neutral-100)' : 'inherit'};
+    background: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
     
     &::before{
       content: "";
@@ -511,37 +516,42 @@ const LinkBox = styled.div`
       transform: scale(0.8);
     }
     &:hover{
-    transition: all 333ms ease 0s;
-    border-color: transparent;
+      transition: all 333ms ease 0s;
+      border-color: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'transparent'};
+      background: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
       &::before{
         opacity: 1;
-        background: ${({ theme }) => theme.bg.hover};
+        background: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.15)' : theme.bg.hover};
         transition: all 333ms ease 0s;
         transform: scale(1);
       }
     }
-    .new-up{
-      transform: scale(.8);
-      opacity: .7;
-    }
     
-    &.socialIcon{
+    &.socialIcon {
       padding: 12px;
       border-radius: 50%;
       border: none;
       margin: 4px;
-      img{
+      background: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'};
+      
+      img {
         height: 20px;
+        filter: ${({ theme }) => theme.name === 'dark' ? 'invert(1) brightness(100%)' : 'none'};
       }
-     
+      
+      &:hover {
+        background: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'};
+      }
+      
       @media screen and (max-width: ${({ theme }) => theme.deviceSize.tablet}) {
         padding: 8px;
         margin: 2px;
-        img{
+        img {
           height: 16px;
         }
       }
     }
+
     @media screen and (max-width: ${({ theme }) => theme.deviceSize.tablet}) {
       padding: 16px 18px;
       font-size: 15px;
@@ -550,6 +560,7 @@ const LinkBox = styled.div`
     .icon-external-link {
       font-size: 20px;
       opacity: 0.7;
+      color: ${({ theme }) => theme.name === 'dark' ? 'var(--color-neutral-100)' : 'inherit'};
     }
 `
 const LinkTitle = styled.div`
@@ -557,12 +568,13 @@ const LinkTitle = styled.div`
   font-size: 16px;
   align-items: center;
   gap: 12px;
+  color: ${({ theme }) => theme.name === 'dark' ? 'var(--color-neutral-100)' : 'inherit'};
 
   .icon-cube,
   .icon-mail,
   .icon-lightning-bolt {
     font-size: 20px;
-    color: ${({ theme }) => theme.text.secondary};
+    color: ${({ theme }) => theme.name === 'dark' ? 'var(--color-neutral-100)' : theme.text.secondary};
   }
 
   @media screen and (max-width: ${({ theme }) => theme.deviceSize.tablet}) {
@@ -582,13 +594,14 @@ const NewSection = styled.div`
   
   img {
     width: 100%;
-    border: 1px solid ${({ theme }) => theme.bg.secondary};
+    border: 1px solid ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : theme.bg.secondary};
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.2s ease;
     
     &:hover {
       transform: scale(1.01);
+      border-color: ${({ theme }) => theme.name === 'dark' ? 'rgba(255, 255, 255, 0.3)' : theme.bg.secondary};
     }
   }
 `;
