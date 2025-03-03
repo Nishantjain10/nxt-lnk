@@ -421,7 +421,6 @@ const TopPart = styled.div`
 `
 
 
-
 const BottomPart = styled.div`
     margin-bottom: 40px;
     
